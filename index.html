@@ -153,9 +153,9 @@ picture{display:contents}
 .spread.rev .frame{order:2}
 .spread-text{display:flex;flex-direction:column;gap:22px}
 .quote{font-size:clamp(44px, 6.2vw, 88px);line-height:.95;text-wrap:balance}
-.hl{background-image:linear-gradient(var(--hl),var(--hl));background-repeat:no-repeat;background-position:0 86%;background-size:100% .34em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
-.js .hl{background-size:0% .34em;transition:background-size .9s cubic-bezier(.6,0,.2,1) .2s}
-.js .spread.in .hl,.js .spread:hover .hl,.js .what.in .hl{background-size:100% .34em}
+.hl{background-image:linear-gradient(var(--brick),var(--brick));background-repeat:no-repeat;background-position:0 92%;background-size:100% .12em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.js .hl{background-size:0% .12em;transition:background-size .9s cubic-bezier(.6,0,.2,1) .2s}
+.js .spread.in .hl,.js .spread:hover .hl,.js .what.in .hl{background-size:100% .12em}
 .ex{font-size:14px;color:var(--muted)}
 .spread-text p.body{font-size:20px;max-width:28em}
 
@@ -306,7 +306,7 @@ picture{display:contents}
   *,*::before,*::after{animation-duration:.01ms !important;animation-delay:0s !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
   .sweep{display:none}
   .js .reveal.pre img{clip-path:none}
-  .js .hl{background-size:100% .34em}
+  .js .hl{background-size:100% .12em}
 }
 @media print{
   .top,.sweep,.ring,.copy-row,.skip{display:none}
