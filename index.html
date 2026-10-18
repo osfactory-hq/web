@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OS Factory · Problemas reales que se repiten</title>
+<meta name="description" content="OS Factory encuentra los problemas que muchas personas describen en conversaciones públicas, los comprueba con evidencia y ayuda a decidir cuáles merecen una solución.">
+<link rel="canonical" href="https://osfactory.net/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://osfactory.net/">
+<meta property="og:site_name" content="OS Factory">
+<meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:title" content="OS Factory · Problemas reales que se repiten">
+<meta property="og:description" content="Problemas reales, con pruebas, antes de construir nada.">
+<meta property="og:image" content="https://osfactory.net/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="OS Factory: los problemas reales se repiten">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#F5F6F6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111316" media="(prefers-color-scheme: dark)">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23B23A24'/%3E%3Cpath d='M9 23a10 10 0 0 1 10-10M9 17.5a4.5 4.5 0 0 1 4.5-4.5' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round'/%3E%3Ccircle cx='9.5' cy='22.5' r='2.2' fill='%23fff'/%3E%3C/svg%3E">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+@font-face{font-family:'Archivo';src:url(fonts/archivo.woff2) format('woff2');font-weight:100 900;font-stretch:62% 125%;font-display:swap}
+
+:root{
+  --bg:#F5F6F6; --ink:#15181D; --ink-2:#3B4148; --muted:#555C64; --line:#D6D9DB;
+  --brick:#B23A24; --brick-ink:#7E2414; --band:#B23A24; --on-band:#FFFFFF;
+  --dark:#15181D; --on-dark:#FFFFFF; --on-dark-muted:#C5CACE;
+  --header:rgba(245,246,246,.86); --panel:#F5F6F6;
+  --hl:rgba(178,58,36,.2);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#111316; --ink:#ECEEF0; --ink-2:#C3C8CD; --muted:#A2A9B0; --line:#2B3036;
+    --brick:#D65C42; --brick-ink:#F08A73; --band:#9E3420; --on-band:#FFFFFF;
+    --dark:#21262C; --on-dark:#ECEEF0; --on-dark-muted:#A9B0B6;
+    --header:rgba(17,19,22,.86); --panel:#111316;
+    --hl:rgba(214,92,66,.34);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111316; --ink:#ECEEF0; --ink-2:#C3C8CD; --muted:#A2A9B0; --line:#2B3036;
+  --brick:#D65C42; --brick-ink:#F08A73; --band:#9E3420; --on-band:#FFFFFF;
+  --dark:#21262C; --on-dark:#ECEEF0; --on-dark-muted:#A9B0B6;
+  --header:rgba(17,19,22,.86); --panel:#111316;
+  --hl:rgba(214,92,66,.34);
+  color-scheme:dark;
+}
+
+:root[data-lang="en"] [data-l="es"], :root:not([data-lang="en"]) [data-l="en"]{display:none !important}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Archivo','Helvetica Neue',Arial,sans-serif;font-size:18px;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img{display:block;max-width:100%}
+a{color:var(--brick)}
+a:hover{color:var(--brick-ink)}
+:focus-visible{outline:2px solid var(--brick);outline-offset:3px}
+h1,h2,h3,p{margin:0}
+
+.wrap{max-width:1240px;margin-inline:auto;padding-left:max(40px, env(safe-area-inset-left));padding-right:max(40px, env(safe-area-inset-right))}
+.cond{font-stretch:64%;font-weight:800;letter-spacing:-.01em}
+
+/* header */
+.top{position:sticky;top:0;z-index:20;background:var(--header);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid transparent;transition:border-color .3s}
+.top.scrolled{border-bottom-color:var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-top:16px;padding-bottom:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px;min-height:44px;color:var(--ink);text-decoration:none;font-weight:700;font-size:20px}
+.brand:hover{color:var(--ink)}
+.brand svg{transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.brand:hover svg{transform:rotate(-12deg)}
+.tools{display:flex;align-items:center;gap:26px}
+.nav{display:flex;align-items:center;gap:26px;font-size:16px;font-weight:500}
+.nav a{color:var(--ink);text-decoration:none;position:relative;padding:10px 0}
+.nav a::after{content:"";position:absolute;left:0;right:0;bottom:4px;height:2px;background:var(--brick);transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
+.nav a:hover::after,.nav a[aria-current="true"]::after{transform:scaleX(1)}
+.lang{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px}
+.lang button{font:600 13px/1 'Archivo',sans-serif;letter-spacing:.02em;border:0;background:none;color:var(--muted);padding:7px 10px;border-radius:999px;cursor:pointer;min-width:38px}
+.lang button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.menu-btn{display:none;align-items:center;gap:8px;min-height:44px;padding:0 14px;border:1px solid var(--line);background:none;color:var(--ink);font:600 15px/1 'Archivo',sans-serif;cursor:pointer}
+.menu-btn i{position:relative;width:16px;height:2px;background:currentColor}
+.menu-btn i::before,.menu-btn i::after{content:"";position:absolute;left:0;width:16px;height:2px;background:currentColor;transition:transform .2s ease}
+.menu-btn i::before{top:-5px}.menu-btn i::after{top:5px}
+.menu-btn[aria-expanded="true"] i{background:transparent}
+.menu-btn[aria-expanded="true"] i::before{transform:translateY(5px) rotate(45deg)}
+.menu-btn[aria-expanded="true"] i::after{transform:translateY(-5px) rotate(-45deg)}
+.skip{position:absolute;left:16px;top:-80px;z-index:30;background:var(--ink);color:var(--bg);padding:12px 16px;font-weight:600;text-decoration:none}
+.skip:focus{top:12px;color:var(--bg)}
+
+/* hero */
+.hero-top{display:flex;flex-direction:column;gap:40px;padding-top:40px;padding-bottom:48px}
+.giant{font-size:clamp(64px, 11vw, 156px);line-height:.88;text-wrap:balance}
+.giant .w{display:inline-block;opacity:0;transform:translateY(.25em);animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+.hero-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:start}
+.status{font-size:16px;color:var(--muted);display:flex;align-items:center;gap:10px}
+.status i{width:10px;height:10px;background:var(--brick);display:inline-block;flex:none;animation:blink 2.4s ease-in-out 3}
+.hero-copy{display:flex;flex-direction:column;gap:24px}
+.lede{font-size:21px;line-height:1.5}
+.ctas{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+.btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;min-height:48px;padding:14px 22px;background:var(--ink);color:var(--bg);text-decoration:none;font-weight:600;isolation:isolate}
+.btn::before{content:"";position:absolute;inset:0;background:#B23A24;transform:translateX(-101%);transition:transform .35s cubic-bezier(.6,0,.2,1);z-index:-1}
+.btn:hover{color:#FFFFFF}
+.btn:hover::before{transform:none}
+.link{display:inline-block;padding:10px 0;font-weight:600;text-underline-offset:5px;text-decoration-thickness:2px;transition:text-underline-offset .2s}
+.link:hover{text-underline-offset:8px}
+
+/* scanned photo */
+.scan{position:relative;height:600px;overflow:hidden;background:#2A2E33;cursor:crosshair}
+picture{display:contents}
+.scan img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.scan .bw{filter:grayscale(1) contrast(1.08) brightness(.9)}
+.scan .clr{opacity:0;transition:opacity .35s;-webkit-mask-image:radial-gradient(circle 170px at var(--mx,50%) var(--my,50%),#000 55%,transparent 100%);mask-image:radial-gradient(circle 170px at var(--mx,50%) var(--my,50%),#000 55%,transparent 100%)}
+.scan.on .clr{opacity:1}
+.ring{position:absolute;left:0;top:0;width:340px;height:340px;margin:-170px 0 0 -170px;border:2px solid rgba(255,255,255,.7);border-radius:50%;pointer-events:none;opacity:0;transition:opacity .35s;transform:translate(var(--mx,50%),var(--my,50%))}
+.ring::after{content:"";position:absolute;left:50%;top:50%;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:var(--brick)}
+.scan.on .ring{opacity:1}
+.sweep{position:absolute;top:0;bottom:0;left:0;width:3px;background:#B23A24;opacity:0;animation:sweep 2.8s cubic-bezier(.45,0,.55,1) .6s forwards;pointer-events:none}
+.tag{position:absolute;display:flex;align-items:center;gap:10px;opacity:0;transform:translateY(8px);animation:pop .45s ease forwards;cursor:default}
+.tag i{position:relative;width:14px;height:14px;border-radius:50%;background:#FFFFFF;border:3px solid #B23A24;flex:none}
+.tag i::after{content:"";position:absolute;inset:-3px;border-radius:50%;border:2px solid #FFFFFF;opacity:0;animation:ping 2.2s ease-out 3}
+.tag > span{font-stretch:64%;font-weight:800;font-size:25px;line-height:1.3;background:#B23A24;color:#FFFFFF;padding:5px 13px;transition:transform .25s ease,background .25s ease}
+.tag:hover > span{transform:translateX(4px) scale(1.04);background:#8E2C1A}
+.t1{left:14%;top:26%;animation-delay:1.25s}
+.t2{left:42%;top:58%;animation-delay:2.05s}
+.t3{left:66%;top:18%;animation-delay:2.75s}
+.t1 i::after{animation-delay:.2s}.t2 i::after{animation-delay:.9s}.t3 i::after{animation-delay:1.5s}
+.scan .note{position:absolute;left:16px;top:14px;font-size:14px;color:#FFFFFF;background:rgba(21,24,29,.78);padding:4px 10px}
+
+/* framed photos */
+.frame{position:relative;margin:0;overflow:hidden;background:var(--line)}
+.frame img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;filter:grayscale(1) contrast(1.05);transform:scale(1.001);transition:filter .7s ease,transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.frame:hover img{filter:grayscale(0) contrast(1);transform:scale(1.045)}
+.js .reveal img{transition:clip-path 1.2s cubic-bezier(.6,0,.2,1),filter .7s ease,transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.js .reveal.pre img{clip-path:inset(0 100% 0 0)}
+.js .reveal.pre.in img{clip-path:inset(0 0 0 0)}
+.reveal::after{content:"";position:absolute;top:0;bottom:0;left:0;width:3px;background:#B23A24;opacity:0;pointer-events:none}
+.js .reveal.pre.in::after{animation:wipe 1.2s cubic-bezier(.6,0,.2,1) forwards}
+
+/* quote spreads */
+.spreads{padding-top:120px;padding-bottom:120px}
+.spreads .wrap{display:flex;flex-direction:column;gap:110px}
+.spread{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:64px;align-items:center}
+.spread.rev{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr)}
+.frame.wide img{aspect-ratio:3/2}
+.spread.rev.tall{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr)}
+.spread.rev .frame{order:2}
+.spread-text{display:flex;flex-direction:column;gap:22px}
+.quote{font-size:clamp(44px, 6.2vw, 88px);line-height:.95;text-wrap:balance}
+.hl{background-image:linear-gradient(var(--hl),var(--hl));background-repeat:no-repeat;background-position:0 86%;background-size:100% .34em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.js .hl{background-size:0% .34em;transition:background-size .9s cubic-bezier(.6,0,.2,1) .2s}
+.js .spread.in .hl,.js .spread:hover .hl,.js .what.in .hl{background-size:100% .34em}
+.ex{font-size:14px;color:var(--muted)}
+.spread-text p.body{font-size:20px;max-width:28em}
+
+/* band */
+.band{background:var(--band);color:var(--on-band);padding-top:96px;padding-bottom:96px}
+.band .wrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:56px;align-items:end}
+.nums{display:flex;align-items:flex-end;gap:40px;flex-wrap:wrap}
+.nums div{display:flex;flex-direction:column;gap:8px}
+.num{font-size:clamp(110px, 14vw, 190px);line-height:.82;font-variant-numeric:tabular-nums}
+.num.out{color:transparent;-webkit-text-stroke:2px var(--on-band)}
+.nums small{font-size:16px}
+.band p{font-size:19px;line-height:1.5}
+
+/* sections */
+.sec{padding-top:112px;padding-bottom:112px}
+.sec-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:end;margin-bottom:52px}
+.h2{font-size:clamp(52px, 6vw, 76px);line-height:.95}
+.sec-head p{color:var(--ink-2);font-size:19px;max-width:30em}
+.estado-head{align-items:end}
+.here{display:flex;flex-direction:column;gap:14px}
+.city-photo{justify-self:end;width:min(300px,100%)}
+.city-photo img{aspect-ratio:3/4}
+.sec-head .city{font-stretch:64%;font-weight:800;font-size:clamp(34px,4vw,52px);line-height:1;color:var(--brick)}
+
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:40px 32px}
+.steps li{display:flex;flex-direction:column;gap:8px;padding-top:18px;border-top:3px solid var(--ink);transition:border-color .3s}
+.steps .n{font-size:64px;line-height:.9;color:var(--brick);transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+.steps strong{font-size:21px;font-weight:700}
+.steps span.t{font-size:16px;color:var(--ink-2)}
+.steps li:hover{border-top-color:var(--brick)}
+.steps li:hover .n{transform:translateY(-8px)}
+
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:center}
+.two.rev .frame{order:-1}
+.stack{display:flex;flex-direction:column;gap:28px}
+.rows{display:flex;flex-direction:column}
+.row{position:relative;display:flex;flex-direction:column;gap:4px;padding:16px 0;border-top:1px solid var(--line)}
+.row::before{content:"";position:absolute;left:0;top:-1px;height:2px;width:100%;background:var(--brick);transform:scaleX(0);transform-origin:left;transition:transform .45s cubic-bezier(.6,0,.2,1)}
+.row:hover::before{transform:scaleX(1)}
+.row strong{font-size:20px;font-weight:700}
+.row > span{color:var(--ink-2)}
+.rules-note{font-size:16px;color:var(--muted)}
+.rules-note a{font-weight:600}
+
+
+.phases{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;border-top:3px solid var(--ink)}
+.phase{display:flex;flex-direction:column;gap:12px;padding:28px 40px 8px 0}
+.phase + .phase{padding-left:40px;border-left:1px solid var(--line)}
+.phase .cond{font-size:52px;line-height:.95}
+.phase.now .cond{color:var(--brick)}
+.phase h3{font-size:22px;font-weight:700}
+.phase p{color:var(--ink-2)}
+
+/* contact */
+.contact{background:var(--dark);color:var(--on-dark);padding-top:104px;padding-bottom:104px}
+.contact-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:40px 72px;align-items:start}
+.contact .h2{grid-column:1 / -1;max-width:14em;text-wrap:balance}
+.contact-main{display:flex;flex-direction:column;gap:18px;align-items:flex-start}
+.contact .q{font-size:20px;line-height:1.5;color:var(--on-dark);max-width:34em;margin-bottom:12px}
+.contact .who{max-width:40em}
+.contact .who a{color:var(--on-dark);text-underline-offset:3px}
+.contact :focus-visible,.foot :focus-visible{outline-color:var(--on-dark)}
+.copy-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.copied{font-size:15px;color:var(--on-dark-muted);min-height:1.3em}
+.guide{display:flex;flex-direction:column;gap:14px;border-top:3px solid #B23A24;padding-top:20px}
+.guide h3{font-size:22px;font-weight:700}
+.guide ol{margin:0;padding:0;list-style:none;counter-reset:g;display:flex;flex-direction:column;gap:12px}
+.guide li{counter-increment:g;display:grid;grid-template-columns:30px minmax(0,1fr);gap:8px;font-size:17px;line-height:1.45}
+.guide li::before{content:counter(g);font-stretch:64%;font-weight:800;font-size:24px;line-height:1;color:var(--on-dark-muted)}
+.guide p{font-size:15px;color:var(--on-dark-muted)}
+.what{padding-bottom:0}
+.what-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:56px;align-items:start}
+.what-body{display:flex;flex-direction:column;gap:18px}
+.what-body .big{font-size:clamp(24px,2.5vw,34px);line-height:1.32;font-weight:500;letter-spacing:-.01em;text-wrap:pretty}
+.what-body p:not(.big){color:var(--ink-2);font-size:19px}
+.mail{font-size:clamp(32px, 5.2vw, 72px);line-height:.98;color:var(--on-dark);text-decoration:underline;text-decoration-color:#B23A24;text-decoration-thickness:6px;text-underline-offset:12px;overflow-wrap:anywhere;transition:text-decoration-thickness .25s,text-underline-offset .25s}
+.mail:hover{color:var(--on-dark);text-decoration-thickness:12px;text-underline-offset:8px}
+.copy{font:600 15px/1 'Archivo',sans-serif;border:1px solid rgba(255,255,255,.35);background:none;color:var(--on-dark);padding:12px 16px;cursor:pointer;min-height:44px;transition:background .2s,border-color .2s}
+.copy:hover{background:rgba(255,255,255,.08);border-color:var(--on-dark)}
+.contact .who{font-size:16px;color:var(--on-dark-muted)}
+.foot{background:var(--dark);color:var(--on-dark-muted);border-top:1px solid rgba(255,255,255,.1)}
+.foot .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:22px;padding-bottom:22px;font-size:14px}
+.foot a{color:var(--on-dark-muted);text-underline-offset:3px}
+.foot a:hover{color:var(--on-dark)}
+.foot .links{display:flex;gap:20px;flex-wrap:wrap}
+
+@keyframes rise{to{opacity:1;transform:none}}
+@keyframes blink{50%{opacity:.25}}
+@keyframes sweep{0%{left:0;opacity:1}92%{opacity:1}100%{left:100%;opacity:0}}
+@keyframes pop{to{opacity:1;transform:none}}
+@keyframes ping{0%{transform:scale(1);opacity:.9}80%,100%{transform:scale(2.6);opacity:0}}
+@keyframes wipe{0%{left:0;opacity:1}90%{opacity:1}100%{left:100%;opacity:0}}
+
+@media (max-width:900px){
+  .wrap{padding-left:max(20px, env(safe-area-inset-left));padding-right:max(20px, env(safe-area-inset-right))}
+  html{scroll-padding-top:76px}
+  .top .wrap{flex-wrap:nowrap;gap:12px;padding-top:10px;padding-bottom:10px}
+  .brand{font-size:19px;gap:10px}
+  .tools{gap:10px}
+  .menu-btn{display:inline-flex}
+  .nav{display:none;position:absolute;left:0;right:0;top:100%;flex-direction:column;align-items:stretch;gap:0;background:var(--panel);border-bottom:1px solid var(--line);box-shadow:0 12px 24px rgba(0,0,0,.08);padding:4px max(20px, env(safe-area-inset-right)) 12px max(20px, env(safe-area-inset-left))}
+  .top.open .nav{display:flex}
+  .nav a{padding:14px 0;font-size:19px;border-top:1px solid var(--line)}
+  .nav a:first-child{border-top:0}
+  .nav a::after{display:none}
+  .nav a[aria-current="true"]{color:var(--brick)}
+  .lang button{min-height:42px;min-width:44px}
+  .hero-top{gap:24px;padding-top:24px;padding-bottom:36px}
+  .hero-row,.spread,.spread.rev,.band .wrap,.sec-head,.two,.phases,.what-grid,.contact-grid{grid-template-columns:minmax(0,1fr);gap:32px}
+  .spread .frame,.spread.rev .frame,.two .frame,.two.rev .frame{order:2}
+  .city-photo{justify-self:start;width:min(260px,70%)}
+  .phase,.phase + .phase{padding:24px 0 8px;border-left:0}
+  .phase + .phase{border-top:1px solid var(--line)}
+  .scan{height:440px}
+  .tag > span{font-size:17px}
+  .t1{left:5%;top:14%}.t2{left:14%;top:44%}.t3{left:5%;top:72%}
+  .spreads{padding-top:80px;padding-bottom:80px}.spreads .wrap{gap:72px}
+  .sec{padding-top:80px;padding-bottom:80px}
+}
+@media (max-width:420px){
+  .menu-btn{padding:0;width:44px;justify-content:center}
+  .menu-btn span{display:none}
+}
+@media (max-width:360px){
+  .wrap{padding-left:max(16px, env(safe-area-inset-left));padding-right:max(16px, env(safe-area-inset-right))}
+  .top .wrap,.tools{gap:8px}
+  .brand{font-size:17px;gap:8px}
+  .brand svg{width:26px;height:26px}
+}
+@media (hover:none){.scan{cursor:auto}}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms !important;animation-delay:0s !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+  .sweep{display:none}
+  .js .reveal.pre img{clip-path:none}
+  .js .hl{background-size:100% .34em}
+}
+@media print{
+  .top,.sweep,.ring,.copy-row,.skip{display:none}
+  .js .reveal.pre img{clip-path:none}
+  .giant .w,.tag{opacity:1;transform:none;animation:none}
+}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#inicio"><span data-l="es">Saltar al contenido</span><span data-l="en">Skip to content</span></a>
+
+<header class="top" id="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#B23A24"/><path d="M9 23a10 10 0 0 1 10-10M9 17.5a4.5 4.5 0 0 1 4.5-4.5" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round"/><circle cx="9.5" cy="22.5" r="2.2" fill="#FFFFFF"/></svg>
+      OS Factory
+    </a>
+    <div class="tools">
+      <nav class="nav" id="menu" aria-label="Principal" data-aria-es="Principal" data-aria-en="Main">
+        <a href="#como"><span data-l="es">Cómo funciona</span><span data-l="en">How it works</span></a>
+        <a href="#principios"><span data-l="es">Principios</span><span data-l="en">Principles</span></a>
+        <a href="#estado"><span data-l="es">Dónde estamos</span><span data-l="en">Where we are</span></a>
+        <a href="#contacto"><span data-l="es">Contacto</span><span data-l="en">Contact</span></a>
+      </nav>
+      <div class="lang" role="group" aria-label="Idioma / Language">
+        <button type="button" data-set="es" aria-pressed="true">ES</button>
+        <button type="button" data-set="en" aria-pressed="false">EN</button>
+      </div>
+      <button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="menu" aria-label="Menú" data-aria-es="Menú" data-aria-en="Menu"><i aria-hidden="true"></i><span data-l="es">Menú</span><span data-l="en">Menu</span></button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="inicio">
+    <div class="wrap hero-top">
+      <h1 class="cond giant">
+        <span data-l="es"><span class="w" style="animation-delay:.05s">Los</span> <span class="w" style="animation-delay:.12s">problemas</span> <span class="w" style="animation-delay:.19s">reales</span> <span class="w" style="animation-delay:.26s">se</span> <span class="w" style="animation-delay:.33s">repiten.</span></span>
+        <span data-l="en"><span class="w" style="animation-delay:.05s">Real</span> <span class="w" style="animation-delay:.12s">problems</span> <span class="w" style="animation-delay:.19s">keep</span> <span class="w" style="animation-delay:.26s">coming</span> <span class="w" style="animation-delay:.33s">back.</span></span>
+      </h1>
+      <div class="hero-row">
+        <p class="status"><i aria-hidden="true"></i><span data-l="es">SOURCE, nuestro radar, ya funciona en uso interno.</span><span data-l="en">SOURCE, our radar, already runs for internal use.</span></p>
+        <div class="hero-copy">
+          <p class="lede"><span data-l="es">OS Factory encuentra los problemas que muchas personas cuentan una y otra vez, comprueba con evidencia si merece la pena resolverlos y crea la solución.</span><span data-l="en">OS Factory finds the problems many people describe again and again, checks with evidence whether they are worth solving, and builds the solution.</span></p>
+          <div class="ctas">
+            <a class="btn" href="#contacto"><span data-l="es">Cuéntanos un problema</span><span data-l="en">Tell us a problem</span></a>
+            <a class="link" href="#como"><span data-l="es">Ver cómo funciona</span><span data-l="en">See how it works</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="scan" id="scan">
+      <picture><source type="image/webp" srcset="fotos/multitud-800.webp 800w, fotos/multitud-1200.webp 1200w, fotos/multitud-1600.webp 1600w" sizes="100vw"><img class="bw" src="fotos/multitud.jpg" alt="" width="1600" height="1067" fetchpriority="high"></picture>
+      <picture><source type="image/webp" srcset="fotos/multitud-800.webp 800w, fotos/multitud-1200.webp 1200w, fotos/multitud-1600.webp 1600w" sizes="100vw"><img class="clr" src="fotos/multitud.jpg" alt="" aria-hidden="true" width="1600" height="1067"></picture>
+      <div class="ring" aria-hidden="true"></div>
+      <div class="sweep" aria-hidden="true"></div>
+      <div class="tag t1"><i aria-hidden="true"></i><span><span data-l="es">«no consigo darme de baja»</span><span data-l="en">“I can’t cancel my plan”</span></span></div>
+      <div class="tag t2"><i aria-hidden="true"></i><span><span data-l="es">«¿cómo reclamo esta factura?»</span><span data-l="en">“how do I dispute this bill?”</span></span></div>
+      <div class="tag t3"><i aria-hidden="true"></i><span><span data-l="es">«imposible pedir cita»</span><span data-l="en">“no appointments, ever”</span></span></div>
+      <span class="note"><span data-l="es">Ejemplos ilustrativos, no son citas reales</span><span data-l="en">Illustrative examples, not real quotes</span></span>
+    </div>
+  </section>
+
+  <section class="sec what" id="que">
+    <div class="wrap what-grid">
+      <h2 class="cond h2"><span data-l="es">Qué hacemos</span><span data-l="en">What we do</span></h2>
+      <div class="what-body">
+        <p class="big"><span data-l="es">Partimos de lo que la gente cuenta, no de una idea brillante. Cuando un problema se repite y nadie lo resuelve bien, <span class="hl">creamos la solución</span>: una herramienta, un servicio o un producto para quien lo sufre.</span><span data-l="en">We start from what people say, not from a bright idea. When a problem keeps coming up and nobody solves it well, <span class="hl">we build the solution</span>: a tool, a service or a product for the people who have it.</span></p>
+        <p><span data-l="es">Si no merece la pena, lo decimos y pasamos al siguiente.</span><span data-l="en">If it isn’t worth it, we say so and move on.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="spreads">
+    <div class="wrap">
+      <article class="spread">
+        <figure class="frame wide reveal"><picture><source type="image/webp" srcset="fotos/cola-800.webp 800w, fotos/cola-1200.webp 1200w" sizes="(max-width: 900px) 100vw, 660px"><img src="fotos/cola.jpg" alt="" loading="lazy" width="1600" height="1067"></picture></figure>
+        <div class="spread-text">
+          <p class="cond quote"><span data-l="es">«<span class="hl">Dos horas de cola</span> para entregar un papel.»</span><span data-l="en">“<span class="hl">Two hours in a queue</span> to hand in one form.”</span></p>
+          <span class="ex"><span data-l="es">Ejemplo ilustrativo</span><span data-l="en">Illustrative example</span></span>
+          <p class="body"><span data-l="es">Problemas así aparecen una y otra vez, contados por personas distintas en sitios distintos. Eso es lo que medimos: personas, no mensajes.</span><span data-l="en">Problems like this come up again and again, told by different people in different places. That is what we measure: people, not posts.</span></p>
+        </div>
+      </article>
+      <article class="spread rev">
+        <figure class="frame wide reveal"><picture><source type="image/webp" srcset="fotos/expedientes-800.webp 800w, fotos/expedientes-1200.webp 1200w" sizes="(max-width: 900px) 100vw, 660px"><img src="fotos/expedientes.jpg" alt="" loading="lazy" width="1600" height="1067"></picture></figure>
+        <div class="spread-text">
+          <p class="cond quote"><span data-l="es">«Pierdo las tardes <span class="hl">haciendo facturas</span> a mano.»</span><span data-l="en">“I lose my evenings <span class="hl">doing invoices</span> by hand.”</span></p>
+          <span class="ex"><span data-l="es">Ejemplo ilustrativo</span><span data-l="en">Illustrative example</span></span>
+          <p class="body"><span data-l="es">Autónomos y pequeñas empresas lo cuentan una y otra vez. Antes de proponer nada, buscamos si ya existe una buena solución y cuánta competencia hay en cada país.</span><span data-l="en">Freelancers and small businesses say it again and again. Before proposing anything, we check whether a good solution already exists and how much competition there is in each country.</span></p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="band" id="prueba">
+    <div class="wrap">
+      <div class="nums">
+        <div><span class="cond num out" data-count="393">393</span><small><span data-l="es">publicaciones leídas</span><span data-l="en">posts read</span></small></div>
+        <div><span class="cond num" data-count="10">10</span><small><span data-l="es">necesidades reales</span><span data-l="en">real needs</span></small></div>
+      </div>
+      <p><span data-l="es">Resultado de una prueba de octubre de 2026 con publicaciones públicas de un foro abierto, leídas por su acceso oficial. La mayoría eran bromas o desahogos. Por eso filtramos antes de contar.</span><span data-l="en">Result of an October 2026 test with public posts from an open forum, read through its official access. Most were jokes or venting. That is why we filter before we count.</span></p>
+    </div>
+  </section>
+
+  <section class="sec" id="como">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="cond h2"><span data-l="es">Cómo funciona</span><span data-l="en">How it works</span></h2>
+        <p><span data-l="es">Seis pasos, del mensaje público a la solución. El sistema reúne y mide; una persona decide.</span><span data-l="en">Six steps, from a public post to a solution. The system gathers and measures; a person decides.</span></p>
+      </div>
+      <ol class="steps">
+        <li><span class="cond n">1</span><strong><span data-l="es">Escuchar</span><span data-l="en">Listen</span></strong><span class="t"><span data-l="es">Lee conversaciones públicas en foros abiertos, solo con el acceso oficial de cada plataforma.</span><span data-l="en">Reads public conversations in open forums, only through each platform’s official access.</span></span></li>
+        <li><span class="cond n">2</span><strong><span data-l="es">Filtrar</span><span data-l="en">Filter</span></strong><span class="t"><span data-l="es">Aparta bromas, desahogos y quejas contra una sola empresa.</span><span data-l="en">Sets aside jokes, venting and complaints about one particular company.</span></span></li>
+        <li><span class="cond n">3</span><strong><span data-l="es">Agrupar y medir</span><span data-l="en">Group and measure</span></strong><span class="t"><span data-l="es">Junta las frases que describen lo mismo y cuenta personas distintas, no mensajes.</span><span data-l="en">Joins posts that describe the same problem and counts distinct people, not posts.</span></span></li>
+        <li><span class="cond n">4</span><strong><span data-l="es">Investigar</span><span data-l="en">Research</span></strong><span class="t"><span data-l="es">Prepara un expediente: soluciones que ya existen, qué opinan sus usuarios y cuánta competencia hay.</span><span data-l="en">Prepares a dossier: existing solutions, what their users say and how much competition there is.</span></span></li>
+        <li><span class="cond n">5</span><strong><span data-l="es">Decidir</span><span data-l="en">Decide</span></strong><span class="t"><span data-l="es">Una persona revisa la evidencia y decide: aprobar, investigar más o descartar.</span><span data-l="en">A person reviews the evidence and decides: approve, research further or discard.</span></span></li>
+        <li><span class="cond n">6</span><strong><span data-l="es">Construir la solución</span><span data-l="en">Build the solution</span></strong><span class="t"><span data-l="es">Si se aprueba, creamos la solución más sencilla que funcione: una herramienta, un servicio o un producto. Y la probamos con quien tiene el problema.</span><span data-l="en">If approved, we build the simplest solution that works: a tool, a service or a product. Then we test it with the people who have the problem.</span></span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec" id="principios" style="padding-top:0">
+    <span id="datos"></span>
+    <div class="wrap two rev">
+      <div class="stack">
+        <h2 class="cond h2"><span data-l="es">Principios</span><span data-l="en">Principles</span></h2>
+        <div class="rows">
+          <div class="row"><strong><span data-l="es">Personas, no mensajes</span><span data-l="en">People, not posts</span></strong><span><span data-l="es">Diez mensajes en una conversación pesan menos que tres personas en tres sitios.</span><span data-l="en">Ten posts in one thread weigh less than three people in three places.</span></span></div>
+          <div class="row"><strong><span data-l="es">Evidencia o «desconocido»</span><span data-l="en">Evidence, or “unknown”</span></strong><span><span data-l="es">Cada dato lleva su fuente y su fecha. Lo que no se puede comprobar se marca como desconocido.</span><span data-l="en">Every claim carries its source and date. Whatever cannot be checked is marked as unknown.</span></span></div>
+          <div class="row"><strong><span data-l="es">Solo lo público, por la puerta oficial</span><span data-l="en">Only what is public, through the front door</span></strong><span><span data-l="es">Leemos contenido público con el acceso oficial de cada plataforma. No vendemos ni publicamos lo que leemos, no lo usamos para entrenar IA y no deducimos datos sensibles de nadie.</span><span data-l="en">We read public content through each platform’s official access. We don’t sell or publish what we read, we don’t use it to train AI, and we don’t infer anyone’s sensitive data.</span></span></div>
+          <div class="row"><strong><span data-l="es">Una persona decide</span><span data-l="en">A person decides</span></strong><span><span data-l="es">La IA filtra y resume. Cada decisión y cada gasto los aprueba una persona.</span><span data-l="en">AI filters and summarises. A person approves every decision and every expense.</span></span></div>
+        </div>
+        <p class="rules-note"><span data-l="es">Esta web no usa cookies ni herramientas de seguimiento. Todo el detalle está en la <a href="privacidad.html">política de privacidad</a>.</span><span data-l="en">This website uses no cookies or tracking tools. Full details are in the <a href="privacidad.html">privacy policy</a>.</span></p>
+      </div>
+      <figure class="frame reveal"><picture><source type="image/webp" srcset="fotos/movil-700.webp 700w, fotos/movil-1104.webp 1104w" sizes="(max-width: 900px) 100vw, 580px"><img src="fotos/movil.jpg" alt="" loading="lazy" width="1104" height="1600"></picture></figure>
+    </div>
+  </section>
+
+  <section class="sec" id="estado" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head estado-head">
+        <div class="here">
+          <h2 class="cond h2"><span data-l="es">Dónde estamos</span><span data-l="en">Where we are</span></h2>
+          <p class="city"><span data-l="es">Madrid, España</span><span data-l="en">Madrid, Spain</span></p>
+        </div>
+        <figure class="frame reveal city-photo"><picture><source type="image/webp" srcset="fotos/madrid-400.webp 400w, fotos/madrid-667.webp 667w" sizes="300px"><img src="fotos/madrid.jpg" alt="Edificio Metrópolis en la Gran Vía de Madrid" data-alt-es="Edificio Metrópolis en la Gran Vía de Madrid" data-alt-en="Metrópolis building on Gran Vía, Madrid" loading="lazy" width="667" height="1000"></picture></figure>
+      </div>
+      <div class="phases">
+        <div class="phase now">
+          <span class="cond"><span data-l="es">Ahora</span><span data-l="en">Now</span></span>
+          <h3><span data-l="es">SOURCE, en uso interno</span><span data-l="en">SOURCE, for internal use</span></h3>
+          <p><span data-l="es">El radar ya funciona y lo usamos nosotros. Todavía no es un producto público: no se vende y no tiene clientes.</span><span data-l="en">The radar already works and we use it ourselves. It is not a public product yet: it is not sold and has no customers.</span></p>
+        </div>
+        <div class="phase">
+          <span class="cond"><span data-l="es">Después</span><span data-l="en">Next</span></span>
+          <h3><span data-l="es">Para emprendedores y empresas</span><span data-l="en">For founders and companies</span></h3>
+          <p><span data-l="es">El objetivo es abrir el radar a quienes quieran decidir con evidencia qué problema resolver, antes de invertir tiempo y dinero.</span><span data-l="en">The goal is to open the radar to anyone who wants to decide with evidence which problem to solve, before investing time and money.</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contacto">
+    <div class="wrap contact-grid">
+      <h2 class="cond h2"><span data-l="es">¿Te pasa algo una y otra vez? Cuéntanoslo.</span><span data-l="en">Does something keep happening to you? Tell us.</span></h2>
+      <div class="contact-main">
+        <p class="q"><span data-l="es">Leemos cada mensaje. Si muchas personas cuentan lo mismo, puede ser lo próximo que construyamos. No podemos prometer una solución para cada caso, pero cada mensaje suma.</span><span data-l="en">We read every message. If many people describe the same thing, it may be the next thing we build. We can’t promise a solution for every case, but every message counts.</span></p>
+        <a class="cond mail" id="mail" href="mailto:contact@osfactory.net">contact@osfactory.net</a>
+        <div class="copy-row">
+          <button type="button" class="copy" id="copy"><span data-l="es">Copiar dirección</span><span data-l="en">Copy address</span></button>
+          <span class="copied" id="copied" role="status" aria-live="polite"></span>
+        </div>
+        <p class="who"><span data-l="es">Usamos tu mensaje solo para estudiar el problema. No lo publicamos ni lo compartimos, y puedes pedir que lo borremos cuando quieras. Más detalle en la <a href="privacidad.html">política de privacidad</a>.</span><span data-l="en">We only use your message to study the problem. We do not publish or share it, and you can ask us to delete it at any time. More in the <a href="privacidad.html">privacy policy</a>.</span></p>
+        <p class="who"><span data-l="es">También respondemos preguntas sobre el proyecto o sobre cómo tratamos los datos. Proyecto independiente con sede en Madrid.</span><span data-l="en">We also answer questions about the project or how we handle data. An independent project based in Madrid.</span></p>
+      </div>
+      <aside class="guide" aria-labelledby="guide-t">
+        <h3 id="guide-t"><span data-l="es">Qué contarnos</span><span data-l="en">What to tell us</span></h3>
+        <ol>
+          <li><span><span data-l="es">Qué te pasa, con tus palabras.</span><span data-l="en">What happens, in your own words.</span></span></li>
+          <li><span><span data-l="es">Cada cuánto te ocurre.</span><span data-l="en">How often it happens.</span></span></li>
+          <li><span><span data-l="es">Qué has probado y por qué no te sirvió.</span><span data-l="en">What you have tried and why it didn’t work.</span></span></li>
+          <li><span><span data-l="es">Desde qué país escribes.</span><span data-l="en">Which country you are writing from.</span></span></li>
+        </ol>
+        <p><span data-l="es">Puedes escribir en español o en inglés. Con unas líneas basta.</span><span data-l="en">You can write in Spanish or English. A few lines are enough.</span></p>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 OS Factory · osfactory.net</span>
+    <span class="links"><a href="privacidad.html"><span data-l="es">Privacidad</span><span data-l="en">Privacy</span></a><span><span data-l="es">Hecho en Madrid</span><span data-l="en">Made in Madrid</span></span></span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* language: Spanish for es, ca, gl and eu browsers; English otherwise */
+  var buttons = document.querySelectorAll('.lang button');
+  var mail = document.getElementById('mail');
+  var MAILTO = {
+    es: 'mailto:contact@osfactory.net?subject=' + encodeURIComponent('Un problema que se repite') + '&body=' + encodeURIComponent('Qué me pasa:\n\nCada cuánto:\n\nQué he probado:\n\nPaís:\n'),
+    en: 'mailto:contact@osfactory.net?subject=' + encodeURIComponent('A problem that keeps happening') + '&body=' + encodeURIComponent('What happens:\n\nHow often:\n\nWhat I have tried:\n\nCountry:\n')
+  };
+  function setLang(l){
+    root.setAttribute('data-lang', l);
+    root.setAttribute('lang', l);
+    buttons.forEach(function(b){ b.setAttribute('aria-pressed', String(b.getAttribute('data-set') === l)); });
+    document.querySelectorAll('[data-aria-' + l + ']').forEach(function(el){ el.setAttribute('aria-label', el.getAttribute('data-aria-' + l)); });
+    document.querySelectorAll('[data-alt-' + l + ']').forEach(function(el){ el.setAttribute('alt', el.getAttribute('data-alt-' + l)); });
+    if (mail) mail.setAttribute('href', MAILTO[l]);
+    try { localStorage.setItem('osf-lang', l); } catch(e) {}
+  }
+  var saved = null;
+  try { saved = localStorage.getItem('osf-lang'); } catch(e) {}
+  var nav = ((navigator.languages && navigator.languages[0]) || navigator.language || 'es').toLowerCase();
+  setLang(saved === 'es' || saved === 'en' ? saved : (/^(es|ca|gl|eu)\b/.test(nav) ? 'es' : 'en'));
+  buttons.forEach(function(b){ b.addEventListener('click', function(){ setLang(b.getAttribute('data-set')); }); });
+
+  /* header: border on scroll, phone menu, current section */
+  var top = document.getElementById('top');
+  function onScroll(){ top.classList.toggle('scrolled', window.scrollY > 8); }
+  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  var menuBtn = document.getElementById('menu-btn');
+  function setMenu(open){ top.classList.toggle('open', open); menuBtn.setAttribute('aria-expanded', String(open)); }
+  if (menuBtn) {
+    menuBtn.addEventListener('click', function(){ setMenu(menuBtn.getAttribute('aria-expanded') !== 'true'); });
+    document.querySelectorAll('.nav a').forEach(function(a){ a.addEventListener('click', function(){ setMenu(false); }); });
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && top.classList.contains('open')) { setMenu(false); menuBtn.focus(); } });
+  }
+
+  var links = {};
+  document.querySelectorAll('.nav a').forEach(function(a){ links[a.getAttribute('href').slice(1)] = a; });
+  if ('IntersectionObserver' in window) {
+    var current = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        var a = links[en.target.id]; if (!a) return;
+        if (en.isIntersecting) { Object.keys(links).forEach(function(k){ links[k].removeAttribute('aria-current'); }); a.setAttribute('aria-current', 'true'); }
+        else if (a.getAttribute('aria-current')) { a.removeAttribute('aria-current'); }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    Object.keys(links).forEach(function(id){ var s = document.getElementById(id); if (s) current.observe(s); });
+  }
+
+  /* radar lens over the crowd photo */
+  var scan = document.getElementById('scan');
+  if (scan && window.matchMedia('(hover: hover)').matches) {
+    scan.addEventListener('pointermove', function(e){
+      var r = scan.getBoundingClientRect();
+      scan.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      scan.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      scan.classList.add('on');
+    });
+    scan.addEventListener('pointerleave', function(){ scan.classList.remove('on'); });
+  }
+
+  /* reveal photos, draw quote highlights, count numbers (the real figures stay in the page at rest) */
+  function countUp(el){
+    var end = parseInt(el.getAttribute('data-count'), 10), t0 = null, dur = 1400;
+    function step(t){
+      if (!t0) t0 = t;
+      var p = Math.min((t - t0) / dur, 1), e = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(end * e);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  var targets = document.querySelectorAll('.reveal, .spread, .band, .what');
+  if (!('IntersectionObserver' in window) || reduce) {
+    targets.forEach(function(t){ t.classList.add('in'); });
+    return;
+  }
+  document.querySelectorAll('.reveal').forEach(function(r){
+    if (r.getBoundingClientRect().top > window.innerHeight) r.classList.add('pre');
+  });
+  var band = document.querySelector('.band');
+  var animateNums = band && band.getBoundingClientRect().top > window.innerHeight;
+  var nums = document.querySelectorAll('.num[data-count]');
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if (!en.isIntersecting) return;
+      var el = en.target;
+      el.classList.add('in');
+      if (el === band && animateNums) nums.forEach(countUp);
+      io.unobserve(el);
+    });
+  }, { threshold: 0.3 });
+  targets.forEach(function(t){ io.observe(t); });
+})();
+
+/* copy e-mail */
+(function(){
+  var btn = document.getElementById('copy'), mail = document.getElementById('mail'), status = document.getElementById('copied');
+  if (!btn) return;
+  var timer = null;
+  function say(es, en){
+    var isEn = document.documentElement.getAttribute('data-lang') === 'en';
+    status.textContent = isEn ? en : es;
+    clearTimeout(timer);
+    timer = setTimeout(function(){ status.textContent = ''; }, 4000);
+  }
+  function selectMail(){
+    var r = document.createRange(); r.selectNodeContents(mail);
+    var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+    say('Dirección seleccionada: pulsa Ctrl+C (o Cmd+C en Mac) para copiarla.', 'Address selected: press Ctrl+C (or Cmd+C on a Mac) to copy it.');
+  }
+  btn.addEventListener('click', function(){
+    var text = 'contact@osfactory.net';
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ say('Dirección copiada.', 'Address copied.'); }, selectMail);
+    } else { selectMail(); }
+  });
+})();
+</script>
+</body>
+</html>
