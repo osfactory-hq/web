@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>OS Factory · Problemas reales que se repiten</title>
-<meta name="description" content="OS Factory encuentra los problemas que muchas personas describen en conversaciones públicas, los comprueba con evidencia y ayuda a decidir cuáles merecen una solución.">
+<meta name="description" content="OS Factory encuentra los problemas que muchas personas cuentan una y otra vez, los comprueba con evidencia y crea la solución.">
 <link rel="canonical" href="https://osfactory.net/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://osfactory.net/">
@@ -22,9 +22,10 @@
 <meta name="theme-color" content="#111316" media="(prefers-color-scheme: dark)">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23B23A24'/%3E%3Cpath d='M9 23a10 10 0 0 1 10-10M9 17.5a4.5 4.5 0 0 1 4.5-4.5' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round'/%3E%3Ccircle cx='9.5' cy='22.5' r='2.2' fill='%23fff'/%3E%3C/svg%3E">
-<script>document.documentElement.classList.add('js')</script>
+<link rel="preload" href="fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
+<script>(function(){var d=document.documentElement;d.classList.add('js');var s=null;try{s=localStorage.getItem('osf-lang')}catch(e){}var n=((navigator.languages&&navigator.languages[0])||navigator.language||'es').toLowerCase();var l=(s==='es'||s==='en')?s:(/^(es|ca|gl|eu)\b/.test(n)?'es':'en');d.setAttribute('data-lang',l);d.setAttribute('lang',l);})();</script>
 <style>
-@font-face{font-family:'Archivo';src:url(fonts/archivo.woff2) format('woff2');font-weight:100 900;font-stretch:62% 125%;font-display:swap}
+@font-face{font-family:'Archivo';src:url(fonts/archivo.woff2) format('woff2');font-weight:100 900;font-stretch:62% 125%;font-display:optional}
 
 :root{
   --bg:#F5F6F6; --ink:#15181D; --ink-2:#3B4148; --muted:#555C64; --line:#D6D9DB;
@@ -90,7 +91,7 @@ h1,h2,h3,p{margin:0}
 .menu-btn[aria-expanded="true"] i{background:transparent}
 .menu-btn[aria-expanded="true"] i::before{transform:translateY(5px) rotate(45deg)}
 .menu-btn[aria-expanded="true"] i::after{transform:translateY(-5px) rotate(-45deg)}
-.skip{position:absolute;left:16px;top:-80px;z-index:30;background:var(--ink);color:var(--bg);padding:12px 16px;font-weight:600;text-decoration:none}
+.skip{position:fixed;left:16px;top:-80px;z-index:30;background:var(--ink);color:var(--bg);padding:12px 16px;font-weight:600;text-decoration:none}
 .skip:focus{top:12px;color:var(--bg)}
 
 /* hero */
@@ -214,7 +215,7 @@ picture{display:contents}
 .contact .h2{grid-column:1 / -1;max-width:14em;text-wrap:balance}
 .contact-main{display:flex;flex-direction:column;gap:18px;align-items:flex-start}
 .contact .q{font-size:20px;line-height:1.5;color:var(--on-dark);max-width:34em;margin-bottom:12px}
-.contact .who{max-width:40em}
+.contact .who{max-width:34em}
 .contact .who a{color:var(--on-dark);text-underline-offset:3px}
 .contact :focus-visible,.foot :focus-visible{outline-color:var(--on-dark)}
 .copy-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
@@ -225,6 +226,9 @@ picture{display:contents}
 .guide li{counter-increment:g;display:grid;grid-template-columns:30px minmax(0,1fr);gap:8px;font-size:17px;line-height:1.45}
 .guide li::before{content:counter(g);font-stretch:64%;font-weight:800;font-size:24px;line-height:1;color:var(--on-dark-muted)}
 .guide p{font-size:15px;color:var(--on-dark-muted)}
+.guide .after-t{margin-top:18px;padding-top:18px;border-top:1px solid rgba(255,255,255,.14)}
+.nudge{font-size:clamp(22px,2.4vw,28px);font-weight:600;line-height:1.35}
+.nudge a{display:inline-block;padding:6px 0;text-underline-offset:5px;text-decoration-thickness:2px}
 .what{padding-bottom:0}
 .what-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:56px;align-items:start}
 .what-body{display:flex;flex-direction:column;gap:18px}
@@ -237,7 +241,7 @@ picture{display:contents}
 .contact .who{font-size:16px;color:var(--on-dark-muted)}
 .foot{background:var(--dark);color:var(--on-dark-muted);border-top:1px solid rgba(255,255,255,.1)}
 .foot .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:22px;padding-bottom:22px;font-size:14px}
-.foot a{color:var(--on-dark-muted);text-underline-offset:3px}
+.foot a{color:var(--on-dark-muted);text-underline-offset:3px;display:inline-block;padding:10px 0}
 .foot a:hover{color:var(--on-dark)}
 .foot .links{display:flex;gap:20px;flex-wrap:wrap}
 
@@ -254,7 +258,12 @@ picture{display:contents}
   .top .wrap{flex-wrap:nowrap;gap:12px;padding-top:10px;padding-bottom:10px}
   .brand{font-size:19px;gap:10px}
   .tools{gap:10px}
-  .menu-btn{display:inline-flex}
+  .menu-btn{display:inline-flex;order:2}
+  .lang{order:1}
+  html:not(.js) .menu-btn{display:none}
+  html:not(.js) .top .wrap{flex-wrap:wrap}
+  html:not(.js) .nav{display:flex;position:static;flex-direction:row;flex-wrap:wrap;gap:0 18px;padding:0;border:0;box-shadow:none;background:none;width:100%;order:3}
+  html:not(.js) .nav a{border-top:0;padding:10px 0;font-size:16px}
   .nav{display:none;position:absolute;left:0;right:0;top:100%;flex-direction:column;align-items:stretch;gap:0;background:var(--panel);border-bottom:1px solid var(--line);box-shadow:0 12px 24px rgba(0,0,0,.08);padding:4px max(20px, env(safe-area-inset-right)) 12px max(20px, env(safe-area-inset-left))}
   .top.open .nav{display:flex}
   .nav a{padding:14px 0;font-size:19px;border-top:1px solid var(--line)}
@@ -264,6 +273,13 @@ picture{display:contents}
   .lang button{min-height:42px;min-width:44px}
   .hero-top{gap:24px;padding-top:24px;padding-bottom:36px}
   .hero-row,.spread,.spread.rev,.band .wrap,.sec-head,.two,.phases,.what-grid,.contact-grid{grid-template-columns:minmax(0,1fr);gap:32px}
+  .contact-grid{gap:24px}
+  .contact-main{display:contents}
+  .contact .q{order:1;margin-bottom:0}
+  .guide{order:2;margin-bottom:8px}
+  .mail{order:3}
+  .copy-row{order:4}
+  .contact .who{order:5}
   .spread .frame,.spread.rev .frame,.two .frame,.two.rev .frame{order:2}
   .city-photo{justify-self:start;width:min(260px,70%)}
   .phase,.phase + .phase{padding:24px 0 8px;border-left:0}
@@ -310,6 +326,7 @@ picture{display:contents}
       OS Factory
     </a>
     <div class="tools">
+      <button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="menu" aria-label="Menú" data-aria-es="Menú" data-aria-en="Menu"><i aria-hidden="true"></i><span data-l="es">Menú</span><span data-l="en">Menu</span></button>
       <nav class="nav" id="menu" aria-label="Principal" data-aria-es="Principal" data-aria-en="Main">
         <a href="#como"><span data-l="es">Cómo funciona</span><span data-l="en">How it works</span></a>
         <a href="#principios"><span data-l="es">Principios</span><span data-l="en">Principles</span></a>
@@ -320,7 +337,6 @@ picture{display:contents}
         <button type="button" data-set="es" aria-pressed="true">ES</button>
         <button type="button" data-set="en" aria-pressed="false">EN</button>
       </div>
-      <button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="menu" aria-label="Menú" data-aria-es="Menú" data-aria-en="Menu"><i aria-hidden="true"></i><span data-l="es">Menú</span><span data-l="en">Menu</span></button>
     </div>
   </div>
 </header>
@@ -383,6 +399,7 @@ picture{display:contents}
           <p class="body"><span data-l="es">Autónomos y pequeñas empresas lo cuentan una y otra vez. Antes de proponer nada, buscamos si ya existe una buena solución y cuánta competencia hay en cada país.</span><span data-l="en">Freelancers and small businesses say it again and again. Before proposing anything, we check whether a good solution already exists and how much competition there is in each country.</span></p>
         </div>
       </article>
+      <p class="nudge"><span data-l="es">¿Te suena alguno? <a href="#contacto">Cuéntanos el tuyo</a></span><span data-l="en">Sound familiar? <a href="#contacto">Tell us yours</a></span></p>
     </div>
   </section>
 
@@ -476,6 +493,12 @@ picture{display:contents}
           <li><span><span data-l="es">Desde qué país escribes.</span><span data-l="en">Which country you are writing from.</span></span></li>
         </ol>
         <p><span data-l="es">Puedes escribir en español o en inglés. Con unas líneas basta.</span><span data-l="en">You can write in Spanish or English. A few lines are enough.</span></p>
+        <h3 id="after-t" class="after-t"><span data-l="es">Qué pasa después</span><span data-l="en">What happens next</span></h3>
+        <ol class="after" aria-labelledby="after-t">
+          <li><span><span data-l="es">Leemos tu mensaje.</span><span data-l="en">We read your message.</span></span></li>
+          <li><span><span data-l="es">Lo comparamos con lo que cuentan otras personas.</span><span data-l="en">We compare it with what other people describe.</span></span></li>
+          <li><span><span data-l="es">Si se repite y merece la pena, lo investigamos y te avisamos.</span><span data-l="en">If it keeps coming up and is worth it, we look into it and let you know.</span></span></li>
+        </ol>
       </aside>
     </div>
   </section>
@@ -497,8 +520,8 @@ picture{display:contents}
   var buttons = document.querySelectorAll('.lang button');
   var mail = document.getElementById('mail');
   var MAILTO = {
-    es: 'mailto:contact@osfactory.net?subject=' + encodeURIComponent('Un problema que se repite') + '&body=' + encodeURIComponent('Qué me pasa:\n\nCada cuánto:\n\nQué he probado:\n\nPaís:\n'),
-    en: 'mailto:contact@osfactory.net?subject=' + encodeURIComponent('A problem that keeps happening') + '&body=' + encodeURIComponent('What happens:\n\nHow often:\n\nWhat I have tried:\n\nCountry:\n')
+    es: 'mailto:contact@osfactory.net?subject=' + encodeURIComponent('Un problema que se repite') + '&body=' + encodeURIComponent('Qué me pasa:\r\n\r\nCada cuánto:\r\n\r\nQué he probado:\r\n\r\nPaís:\r\n'),
+    en: 'mailto:contact@osfactory.net?subject=' + encodeURIComponent('A problem that keeps happening') + '&body=' + encodeURIComponent('What happens:\r\n\r\nHow often:\r\n\r\nWhat I have tried:\r\n\r\nCountry:\r\n')
   };
   function setLang(l){
     root.setAttribute('data-lang', l);
@@ -507,12 +530,10 @@ picture{display:contents}
     document.querySelectorAll('[data-aria-' + l + ']').forEach(function(el){ el.setAttribute('aria-label', el.getAttribute('data-aria-' + l)); });
     document.querySelectorAll('[data-alt-' + l + ']').forEach(function(el){ el.setAttribute('alt', el.getAttribute('data-alt-' + l)); });
     if (mail) mail.setAttribute('href', MAILTO[l]);
+    document.title = l === 'en' ? 'OS Factory · Real problems keep coming back' : 'OS Factory · Problemas reales que se repiten';
     try { localStorage.setItem('osf-lang', l); } catch(e) {}
   }
-  var saved = null;
-  try { saved = localStorage.getItem('osf-lang'); } catch(e) {}
-  var nav = ((navigator.languages && navigator.languages[0]) || navigator.language || 'es').toLowerCase();
-  setLang(saved === 'es' || saved === 'en' ? saved : (/^(es|ca|gl|eu)\b/.test(nav) ? 'es' : 'en'));
+  setLang(root.getAttribute('data-lang') === 'en' ? 'en' : 'es'); /* chosen in <head> before the page is drawn */
   buttons.forEach(function(b){ b.addEventListener('click', function(){ setLang(b.getAttribute('data-set')); }); });
 
   /* header: border on scroll, phone menu, current section */
@@ -526,6 +547,7 @@ picture{display:contents}
     menuBtn.addEventListener('click', function(){ setMenu(menuBtn.getAttribute('aria-expanded') !== 'true'); });
     document.querySelectorAll('.nav a').forEach(function(a){ a.addEventListener('click', function(){ setMenu(false); }); });
     document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && top.classList.contains('open')) { setMenu(false); menuBtn.focus(); } });
+    document.addEventListener('click', function(e){ if (top.classList.contains('open') && !top.contains(e.target)) setMenu(false); });
   }
 
   var links = {};
@@ -601,7 +623,8 @@ picture{display:contents}
   function selectMail(){
     var r = document.createRange(); r.selectNodeContents(mail);
     var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
-    say('Dirección seleccionada: pulsa Ctrl+C (o Cmd+C en Mac) para copiarla.', 'Address selected: press Ctrl+C (or Cmd+C on a Mac) to copy it.');
+    if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) say('Mantén pulsada la dirección para copiarla.', 'Press and hold the address to copy it.');
+    else say('Dirección seleccionada: pulsa Ctrl+C (o Cmd+C en Mac) para copiarla.', 'Address selected: press Ctrl+C (or Cmd+C on a Mac) to copy it.');
   }
   btn.addEventListener('click', function(){
     var text = 'contact@osfactory.net';

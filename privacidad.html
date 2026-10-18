@@ -11,21 +11,21 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23B23A24'/%3E%3Cpath d='M9 23a10 10 0 0 1 10-10M9 17.5a4.5 4.5 0 0 1 4.5-4.5' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round'/%3E%3Ccircle cx='9.5' cy='22.5' r='2.2' fill='%23fff'/%3E%3C/svg%3E">
 <style>
-@font-face{font-family:'Archivo';src:url(fonts/archivo.woff2) format('woff2');font-weight:100 900;font-stretch:62% 125%;font-display:swap}
+@font-face{font-family:'Archivo';src:url(fonts/archivo.woff2) format('woff2');font-weight:100 900;font-stretch:62% 125%;font-display:optional}
 :root{--bg:#F5F6F6;--ink:#15181D;--ink-2:#3B4148;--muted:#555C64;--line:#D6D9DB;--brick:#B23A24;--brick-ink:#7E2414;color-scheme:light}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111316;--ink:#ECEEF0;--ink-2:#C3C8CD;--muted:#A2A9B0;--line:#2B3036;--brick:#E0715A;--brick-ink:#F08A73;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#111316;--ink:#ECEEF0;--ink-2:#C3C8CD;--muted:#A2A9B0;--line:#2B3036;--brick:#E0715A;--brick-ink:#F08A73;color-scheme:dark}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111316;--ink:#ECEEF0;--ink-2:#C3C8CD;--muted:#A2A9B0;--line:#2B3036;--brick:#D65C42;--brick-ink:#F08A73;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#111316;--ink:#ECEEF0;--ink-2:#C3C8CD;--muted:#A2A9B0;--line:#2B3036;--brick:#D65C42;--brick-ink:#F08A73;color-scheme:dark}
 :root[data-lang="en"] [data-l="es"], :root:not([data-lang="en"]) [data-l="en"]{display:none !important}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:'Archivo','Helvetica Neue',Arial,sans-serif;font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased}
 a{color:var(--brick);text-underline-offset:3px}
 a:hover{color:var(--brick-ink)}
 :focus-visible{outline:2px solid var(--brick);outline-offset:3px}
-.wrap{max-width:760px;margin-inline:auto;padding-left:max(20px, env(safe-area-inset-left));padding-right:max(20px, env(safe-area-inset-right))}
+.wrap{max-width:680px;margin-inline:auto;padding-left:max(20px, env(safe-area-inset-left));padding-right:max(20px, env(safe-area-inset-right))}
 .top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:16px;padding-bottom:16px}
 .brand{display:flex;align-items:center;gap:10px;min-height:44px;color:var(--ink);text-decoration:none;font-weight:700;font-size:19px}
 .lang{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px}
-.lang button{font:600 13px/1 'Archivo',sans-serif;border:0;background:none;color:var(--muted);padding:7px 10px;border-radius:999px;cursor:pointer;min-width:42px;min-height:38px}
+.lang button{font:600 13px/1 'Archivo',sans-serif;border:0;background:none;color:var(--muted);padding:7px 10px;border-radius:999px;cursor:pointer;min-width:44px;min-height:42px}
 .lang button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
 main{padding-top:32px;padding-bottom:96px}
 h1{font-stretch:64%;font-weight:800;font-size:clamp(48px,9vw,80px);line-height:.95;letter-spacing:-.01em;margin:0 0 16px}
@@ -37,7 +37,8 @@ li{margin-bottom:6px}
 .date{font-size:15px;color:var(--muted)}
 .back{display:inline-block;margin-top:40px;padding:10px 0;font-weight:600}
 </style>
-<script>document.documentElement.classList.add('js')</script>
+<link rel="preload" href="fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
+<script>(function(){var d=document.documentElement;d.classList.add('js');var s=null;try{s=localStorage.getItem('osf-lang')}catch(e){}var n=((navigator.languages&&navigator.languages[0])||navigator.language||'es').toLowerCase();var l=(s==='es'||s==='en')?s:(/^(es|ca|gl|eu)\b/.test(n)?'es':'en');d.setAttribute('data-lang',l);d.setAttribute('lang',l);})();</script>
 </head>
 <body>
 <header class="top">
@@ -134,9 +135,7 @@ li{margin-bottom:6px}
     document.title = l === 'en' ? 'Privacy · OS Factory' : 'Privacidad · OS Factory';
     try { localStorage.setItem('osf-lang', l); } catch(e) {}
   }
-  var saved = null; try { saved = localStorage.getItem('osf-lang'); } catch(e) {}
-  var nav = ((navigator.languages && navigator.languages[0]) || navigator.language || 'es').toLowerCase();
-  setLang(saved === 'es' || saved === 'en' ? saved : (/^(es|ca|gl|eu)\b/.test(nav) ? 'es' : 'en'));
+  setLang(root.getAttribute('data-lang') === 'en' ? 'en' : 'es');
   buttons.forEach(function(b){ b.addEventListener('click', function(){ setLang(b.getAttribute('data-set')); }); });
 })();
 </script>
