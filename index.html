@@ -32,7 +32,7 @@
   --brick:#B23A24; --brick-ink:#7E2414; --band:#B23A24; --on-band:#FFFFFF;
   --dark:#15181D; --on-dark:#FFFFFF; --on-dark-muted:#C5CACE;
   --header:rgba(245,246,246,.86); --panel:#F5F6F6;
-  --hl:rgba(178,58,36,.2);
+  --hl-line:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12' preserveAspectRatio='none'%3E%3Cpath d='M3 7.4C30 5.1 61 9.6 97 7.2S162 4.4 197 6.6' fill='none' stroke='%23B23A24' stroke-width='3.8' stroke-linecap='round'/%3E%3Cpath d='M9 9.7C52 7.8 108 10.9 150 8.8S185 8.3 193 9.1' fill='none' stroke='%23B23A24' stroke-width='1.9' stroke-linecap='round' opacity='.7'/%3E%3C/svg%3E");
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){
@@ -41,7 +41,7 @@
     --brick:#D65C42; --brick-ink:#F08A73; --band:#9E3420; --on-band:#FFFFFF;
     --dark:#21262C; --on-dark:#ECEEF0; --on-dark-muted:#A9B0B6;
     --header:rgba(17,19,22,.86); --panel:#111316;
-    --hl:rgba(214,92,66,.34);
+    --hl-line:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12' preserveAspectRatio='none'%3E%3Cpath d='M3 7.4C30 5.1 61 9.6 97 7.2S162 4.4 197 6.6' fill='none' stroke='%23D65C42' stroke-width='3.8' stroke-linecap='round'/%3E%3Cpath d='M9 9.7C52 7.8 108 10.9 150 8.8S185 8.3 193 9.1' fill='none' stroke='%23D65C42' stroke-width='1.9' stroke-linecap='round' opacity='.7'/%3E%3C/svg%3E");
     color-scheme:dark;
   }
 }
@@ -50,7 +50,7 @@
   --brick:#D65C42; --brick-ink:#F08A73; --band:#9E3420; --on-band:#FFFFFF;
   --dark:#21262C; --on-dark:#ECEEF0; --on-dark-muted:#A9B0B6;
   --header:rgba(17,19,22,.86); --panel:#111316;
-  --hl:rgba(214,92,66,.34);
+  --hl-line:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12' preserveAspectRatio='none'%3E%3Cpath d='M3 7.4C30 5.1 61 9.6 97 7.2S162 4.4 197 6.6' fill='none' stroke='%23D65C42' stroke-width='3.8' stroke-linecap='round'/%3E%3Cpath d='M9 9.7C52 7.8 108 10.9 150 8.8S185 8.3 193 9.1' fill='none' stroke='%23D65C42' stroke-width='1.9' stroke-linecap='round' opacity='.7'/%3E%3C/svg%3E");
   color-scheme:dark;
 }
 
@@ -153,9 +153,9 @@ picture{display:contents}
 .spread.rev .frame{order:2}
 .spread-text{display:flex;flex-direction:column;gap:22px}
 .quote{font-size:clamp(44px, 6.2vw, 88px);line-height:.95;text-wrap:balance}
-.hl{background-image:linear-gradient(var(--brick),var(--brick));background-repeat:no-repeat;background-position:0 92%;background-size:100% .12em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
-.js .hl{background-size:0% .12em;transition:background-size .9s cubic-bezier(.6,0,.2,1) .2s}
-.js .spread.in .hl,.js .spread:hover .hl,.js .what.in .hl{background-size:100% .12em}
+.hl{padding-bottom:.1em;background-image:var(--hl-line);background-repeat:no-repeat;background-position:0 100%;background-size:100% .3em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.js .hl{background-size:0% .3em;transition:background-size .9s cubic-bezier(.6,0,.2,1) .2s}
+.js .spread.in .hl,.js .spread:hover .hl,.js .what.in .hl{background-size:100% .3em}
 .ex{font-size:14px;color:var(--muted)}
 .spread-text p.body{font-size:20px;max-width:28em}
 
@@ -306,7 +306,7 @@ picture{display:contents}
   *,*::before,*::after{animation-duration:.01ms !important;animation-delay:0s !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
   .sweep{display:none}
   .js .reveal.pre img{clip-path:none}
-  .js .hl{background-size:100% .12em}
+  .js .hl{background-size:100% .3em}
 }
 @media print{
   .top,.sweep,.ring,.copy-row,.skip{display:none}
